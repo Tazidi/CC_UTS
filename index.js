@@ -23,6 +23,6 @@ app.get('/products', (req, res) => {
 
 app.use(express.static('views'));
 
-app.listen(3000, () => {
+app.listen(3000, '0.0.0.0', () => {
   console.log('Server berjalan di http://localhost:3000');
 });
