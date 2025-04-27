@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produk Kami</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      padding: 2rem;
+    }
+    .card {
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+      border-radius: 12px;
+      transition: transform 0.3s;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+    .product-img-wrapper {
+      background-color: #fff; /* Border putih */
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px; /* Tinggi gambar lebih besar */
+    }
+    .product-img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain; /* Supaya gambar tidak terpotong */
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="text-center mb-5">Produk Kami</h1>
+  <div class="row" id="product-list">
+    <!-- Produk akan dimasukkan di sini -->
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  async function fetchProducts() {
+    try {
+      const response = await fetch('/products');
+      const products = await response.json();
+      const productList = document.getElementById('product-list');
+      productList.innerHTML = '';
+
+      const imageUrls = [
+        'https://utsbuckets.s3.ap-southeast-2.amazonaws.com/Produk1.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARZZX7ACRWAZPQQGT%2F20250427%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250427T080846Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=531bccaa37aaf918d5a7950205e880adbba71bd1259b39c9e9bbe2b83d4f64c7',
+        'https://utsbuckets.s3.ap-southeast-2.amazonaws.com/Produk2.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARZZX7ACRWAZPQQGT%2F20250427%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250427T080910Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=e8d30cb76824e350e8e3f22fb694767bfbf3b397ecc876588b2c8936f1d5009f',
+        'https://utsbuckets.s3.ap-southeast-2.amazonaws.com/Produk3.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARZZX7ACRWAZPQQGT%2F20250427%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250427T080935Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a25acf5c0966e743e5325f90f38913d4f598d6fef5c24b3c0241232bb64ba9d7',
+        'https://utsbuckets.s3.ap-southeast-2.amazonaws.com/Produk4.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARZZX7ACRWAZPQQGT%2F20250427%2Fap-southeast-2%2Fs3%2Faws4_request&X-Amz-Date=20250427T105126Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=d631e6498463cf0de20a58b13353b08a757428cc65b5d2f3491ad382e3b0c167'
+      ];
+
+      products.forEach((product, index) => {
+        const imgUrl = imageUrls[index % imageUrls.length];
+
+        const col = document.createElement('div');
+        col.className = 'col-md-4 mb-4';
+        col.innerHTML = `
+          <div class="card h-100">
+            <div class="product-img-wrapper">
+              <img src="${imgUrl}" class="product-img" alt="Produk">
+            </div>
+            <div class="card-body">
+              <p class="card-text text-center fw-bold">Rp ${Number(product.price).toLocaleString('id-ID')}</p>
+            </div>
+          </div>
+        `;
+        productList.appendChild(col);
+      });
+    } catch (error) {
+      console.error('Gagal mengambil produk:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', fetchProducts);
+</script>
+
+</body>
+</html>
